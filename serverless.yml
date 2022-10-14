@@ -104,6 +104,34 @@ functions:
           method: DELETE
           path: users/{id}
           cors: true
+  createBandGroup:
+    handler: handler.createBandGroup
+    events:
+      - http:
+          method: POST
+          path: bandgroup
+          cors: true
+  readBandGroup:
+    handler: handler.readBandGroup
+    events:
+      - http:
+          method: GET
+          path: bandgroup
+          cors: true
+  updateBandGroup:
+    handler: handler.updateBandGroup
+    events:
+      - http:
+          method: PUT
+          path: bandgroup/{id}
+          cors: true
+  deleteBandGroup:
+    handler: handler.deleteBandGroup
+    events:
+      - http:
+          method: DELETE
+          path: bandgroup/{id}
+          cors: true
   # hello:
   #   handler: handler.hello
 #    The following are a few example events you can configure

@@ -1,0 +1,11 @@
+{
+    "name": "",
+    "image": "",
+    "latitude": 27.2046,
+    "longitude": 77.4977,
+    "description": "",
+    "users": [{
+        "userId": "3",
+        "isGroupAdmin": "true"
+    }]
+}

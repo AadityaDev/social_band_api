@@ -6,11 +6,11 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports = (event, callback) => {
   const data = JSON.parse(event.body);
 
-  if(!data?.name || !data?.mobile || data?.bandInstrument) {
+  if(!data?.name || !data?.latitude || data?.longitude || data?.description) {
     let error = {
       errorType : "Validation",
-      errorMessage: "User name, mobile or instrument is missing!!!",
-      trace : [ "User details are missing!!!" ]
+      errorMessage: "Band name, latitude, latitude or description is missing!!!",
+      trace : [ "Band details are missing!!!" ]
     }
     callback(error);
   }
@@ -19,8 +19,8 @@ module.exports = (event, callback) => {
   data.updatedAt = new Date().getTime();
 
   const params = {
-    TableName : 'users',
-    Item: { name: data?.name, mobile: data?.mobile, bandInstrument: data?.bandInstrument, updatedAt: data?.updatedAt }
+    TableName : 'band_groups',
+    Item: { data: data?.name, latitude: data?.latitude, longitude: data?.longitude, data: data?.description, updatedAt: data.updatedAt }
   };
 
   return dynamoDb.put(params, (error, data) => {
