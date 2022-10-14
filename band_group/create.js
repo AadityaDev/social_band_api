@@ -6,8 +6,10 @@ const uuid = require('uuid');
 
 module.exports = (event, callback) => {
     const data = JSON.parse(event.body);
-  
-    if(!data?.name || !data?.latitude || data?.latitude || data?.description) {
+
+    console.log(`details: name :${data?.name}, longitude: ${data?.longitude}, latitude: ${data?.latitude}, description: ${data?.description}`);
+    console.log(`details: ${!data?.name || !data?.longitude || data?.latitude || data?.description}`);
+    if(!data?.name || !data?.latitude || !data?.longitude || !data?.description) {
       let error = {
         errorType : "Validation",
         errorMessage: "Band name, latitude, latitude or description is missing!!!",
