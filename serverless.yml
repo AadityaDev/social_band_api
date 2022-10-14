@@ -22,7 +22,9 @@ frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs16.x
+  plugins:
+  - serverless-offline
 
 # you can overwrite defaults here
   stage: dev
@@ -172,3 +174,5 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: 'users'
+plugins:
+  - serverless-offline

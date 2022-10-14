@@ -7,7 +7,7 @@ module.exports = (event, callback) => {
   const params = {
     TableName : 'users',
     Key: {
-      id: event.pathParameters.id
+      id: event?.pathParameters?.id
     }
   };
 

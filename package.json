@@ -3,14 +3,18 @@
     "version": "0.1.0",
     "description": "Todo service built with Serverless",
     "scripts": {
-      "install": "npm run install",
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "deploy": "serverless deploy"
+        "start": "./node_modules/.bin/serverless offline -s dev",
+        "debug": "SLS_DEBUG=* && node --inspect /Users/adityaverma/node_modules/serverless/bin/serverless offline -s dev --verbose",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "deploy": "serverless deploy"
     },
     "author": "",
     "license": "MIT",
     "dependencies": {
-      "aws-sdk": "^2.6.7",
-      "uuid": "^2.0.3"
+        "aws-sdk": "^2.6.7",
+        "uuid": "^2.0.3"
+    },
+    "devDependencies": {
+        "serverless-offline": "^11.1.2"
     }
-  }
+}
