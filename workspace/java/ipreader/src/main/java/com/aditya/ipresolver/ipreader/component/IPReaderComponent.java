@@ -23,12 +23,13 @@ public class IPReaderComponent {
     }
 
     public Map<String, Integer> getTop100IPAddresses() {
-        return Collections.synchronizedMap(ipAddress.getIPAddresses()).entrySet()
+        return ipAddress.getIPAddresses()!=null && ipAddress.getIPAddresses().size() > 0 ? ipAddress.getIPAddresses().entrySet()
         .stream()
         .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
         .limit(MAX_SORTED_MAP_SIZE)
         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2)->
-        e2, LinkedHashMap::new));
+        e2, LinkedHashMap::new))
+        : Collections.emptyMap();
     }
 
     public void saveIPAddress(String key) {

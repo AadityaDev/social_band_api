@@ -1,0 +1,16 @@
+{
+    "name": "social_band_api",
+    "version": "0.1.0",
+    "description": "Todo service built with Serverless",
+    "scripts": {
+      "install": "npm run install",
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "deploy": "serverless deploy"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+      "aws-sdk": "^2.6.7",
+      "uuid": "^2.0.3"
+    }
+  }
