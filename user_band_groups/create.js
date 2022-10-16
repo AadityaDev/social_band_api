@@ -3,8 +3,9 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const uuid = require('uuid');
+const {getUserDetail} = require('../utils/utils');
 
-module.exports = (event, callback) => {
+module.exports = async (event, callback) => {
     const data = JSON.parse(event.body);
   
     if(!data?.name || !data?.latitude || data?.latitude || data?.description) {
@@ -16,6 +17,8 @@ module.exports = (event, callback) => {
       callback(error);
     }
   
+    let da = await getUserDetail(email);
+
     data.id = uuid.v1();
     data.createdAt = new Date().getTime();
     data.updatedAt = new Date().getTime();

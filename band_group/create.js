@@ -8,7 +8,6 @@ module.exports = (event, callback) => {
     const data = JSON.parse(event.body);
 
     console.log(`details: name :${data?.name}, longitude: ${data?.longitude}, latitude: ${data?.latitude}, description: ${data?.description}`);
-    console.log(`details: ${!data?.name || !data?.longitude || data?.latitude || data?.description}`);
     if(!data?.name || !data?.latitude || !data?.longitude || !data?.description) {
       let error = {
         errorType : "Validation",
@@ -24,7 +23,7 @@ module.exports = (event, callback) => {
   
     const params = {
       TableName: 'band_groups',
-      Item: { data: data?.name, latitude: data?.latitude, longitude: data?.longitude, data: data?.description, createdAt: data?.createdAt, updatedAt: data.updatedAt }
+      Item: { id: data?.id, data: data?.name, latitude: data?.latitude, longitude: data?.longitude, description: data?.description, createdAt: data?.createdAt, updatedAt: data.updatedAt }
     };
   
     return dynamoDb.put(params, (error, data) => {

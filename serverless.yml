@@ -23,13 +23,35 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs16.x
+  environment:
+    user_pool_id: { Ref: UserPool }
+    client_id: { Ref: UserClient }
   plugins:
   - serverless-offline
 
 # you can overwrite defaults here
   stage: dev
   region: us-west-1
-
+  iam:
+    role:
+      statements: # permissions for all of your functions can be set here
+        - Effect: Allow
+          Action: # Gives permission to DynamoDB tables in a specific region
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - cognito-idp:AdminInitiateAuth
+            - cognito-idp:AdminCreateUser
+            - cognito-idp:AdminSetUserPassword
+            - lambda:InvokeFunction
+            - lambda:InvokeAsync
+          Resource: 
+            - 'arn:aws:dynamodb:us-east-1:*:*'
+            - "arn:aws:lambda:us-east-1:*:*"
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -40,11 +62,14 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-west-1:*:*"
-    - Effect: Allow
-      Action:
-        - lambda:*
-      Resource: "arn:aws:dynamodb:us-west-1:*:*"
+        - cognito-idp:AdminInitiateAuth
+        - cognito-idp:AdminCreateUser
+        - cognito-idp:AdminSetUserPassword
+        - lambda:InvokeFunction
+        - lambda:InvokeAsync
+      Resource: 
+        - "arn:aws:dynamodb:us-west-1:*:*"
+        - "arn:aws:lambda:us-east-1:*:*"
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
 #    role:
@@ -76,6 +101,22 @@ provider:
 #    - include-me-dir/**
 
 functions:
+  privateAPI:
+      handler: handler.private
+      events:
+        - http:
+            path: user/private
+            method: post
+            cors: true
+            authorizer:
+              name: PrivateAuthorizer
+              type: COGNITO_USER_POOLS
+              arn:
+                Fn::GetAtt:
+                  - UserPool
+                  - Arn
+              claims:
+                - email
   createUser:
     handler: handler.createUser
     events:
@@ -89,7 +130,11 @@ functions:
       - http:
           method: GET
           path: users
+          # authorizer: privateAPI
           cors: true
+    Action:
+      - lambda:InvokeFunction
+      - lambda:InvokeAsync
   updateUser:
     handler: handler.updateUser
     events:
@@ -118,6 +163,22 @@ functions:
           method: GET
           path: bandgroup
           cors: true
+    Action:
+      - dynamodb:DescribeTable
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+      - dynamodb:DeleteItem
+      - cognito-idp:AdminInitiateAuth
+      - cognito-idp:AdminCreateUser
+      - cognito-idp:AdminSetUserPassword
+      - lambda:InvokeFunction
+      - lambda:InvokeAsync
+    Resource: 
+      - "arn:aws:dynamodb:us-west-1:*:*"
+      - "arn:aws:lambda:us-east-1:*:*"
   updateBandGroup:
     handler: handler.updateBandGroup
     events:
@@ -202,5 +263,51 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: 'users'
-plugins:
-  - serverless-offline
+    BandGroupsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'bandgroup'
+    UserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: !Sub socialbandapp501dcc3a_userpool_501dcc3a-dev
+        Schema:
+          - Name: email
+            Required: true
+            Mutable: true
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+        AutoVerifiedAttributes: ["email"]
+    UserClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: !Sub social501dcc3a_app_client
+        GenerateSecret: false
+        UserPoolId: { Ref: UserPool }
+        AccessTokenValidity: 5
+        IdTokenValidity: 5
+        ExplicitAuthFlows:
+          - "ALLOW_CUSTOM_AUTH" 
+          - "ALLOW_USER_SRP_AUTH"
+          - "ALLOW_REFRESH_TOKEN_AUTH"
+    # MyUrlFunctionPermissions:
+    #   Type: AWS::Lambda::Permission
+    #   Properties:
+    #     FunctionName: !Ref readBandGroup
+    #     Action: 
+    #       dynamodb:*
+    #       lambda:*
+    #     Principal: "*"
+
