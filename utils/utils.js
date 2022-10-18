@@ -35,5 +35,4 @@ const addRequiredHeaders = () => {
 module.exports = {
     getUserDetail,
     addRequiredHeaders
-
 }

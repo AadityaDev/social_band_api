@@ -2,9 +2,7 @@
 
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
-const {getUserDetail} = require('../utils/utils');
 const  { getUserByEmail } = require('../users/get-userby-email');
-const { PinpointEmail } = require('aws-sdk');
 
 module.exports = async (event, callback) => {
 
@@ -35,12 +33,11 @@ module.exports = async (event, callback) => {
     },
   };
 
-  return dynamoDb.query(params2, (error, data) => {
+  return dynamoDb.query(params, (error, data) => {
     if (error) {
       callback(error);
     }
     console.log(`data item 2: ${data?.Items}`);
     callback(error, data?.Items);
   });
-  return da;
 };

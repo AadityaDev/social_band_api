@@ -89,6 +89,13 @@ functions:
           method: DELETE
           path: users/{id}
           cors: true
+  verifyUser:
+    handler: handler.verifyUser
+    events:
+      - http:
+          method: POST
+          path: signin
+          cors: true
   createBandGroup:
     handler: handler.createBandGroup
     events:

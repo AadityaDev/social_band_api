@@ -7,15 +7,10 @@ const getUserByEmail = async(email) => {
     let userDetail = null;
     try {
       if(!email) {
-        let error = {
-          errorType : "Validation",
-          errorMessage: "Band name, latitude, latitude or description is missing!!!",
-          trace : [ "Band details are missing!!!" ]
-        }
         console.log('email not found!!!');
         return userDetail;
       }
-      const params2 = {
+      const params = {
         TableName: 'users',
         KeyConditionExpression: '#email = :email',
         ExpressionAttributeNames: {
@@ -25,7 +20,7 @@ const getUserByEmail = async(email) => {
           ':email' : `${email}`
         },
       };
-      userDetail =  await dynamoDb.query(params2).promise();
+      userDetail =  await dynamoDb.query(params).promise();
       if(userDetail?.Items?.length>0) {
         userDetail = userDetail?.Items[0];
       }
@@ -36,4 +31,6 @@ const getUserByEmail = async(email) => {
     }
 }
 
-module.exports = { getUserByEmail }
+module.exports = { 
+  getUserByEmail
+}

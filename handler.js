@@ -7,6 +7,7 @@ const usersReadAll = require('./users/read.js');
 // const usersReadOne = require('./users/read-one.js');
 const usersUpdate = require('./users/update.js');
 const usersDelete = require('./users/delete.js');
+const usersVerify = require('./users/verify-user');
 
 // band group
 const bandGroupCreate = require('./user_band_groups/create.js');
@@ -121,6 +122,26 @@ module.exports.updateUser = (event, context, callback) => {
       body: null,
       headers: null,
     };
+    response.headers = addRequiredHeaders();
+    if(error) {
+      response.statusCode = 500;
+      response.body = JSON.stringify(error);
+    } else {
+      response.statusCode = 200;
+      response.body = JSON.stringify(result);
+    }
+    context.succeed(response);
+  });
+};
+
+module.exports.verifyUser = (event, context, callback) => {
+  usersVerify(event, (error, result) => {
+    console.log(`error is: ${error} and result is: ${result}`);
+    let response = {
+      statusCode: null,
+      body: null,
+      headers: null,
+    };      
     response.headers = addRequiredHeaders();
     if(error) {
       response.statusCode = 500;
