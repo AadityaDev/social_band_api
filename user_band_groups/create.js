@@ -35,7 +35,8 @@ module.exports = async (event, callback) => {
       data?.admin?.push({
         id: userDetail?.id,
         name: userDetail?.name,
-        email: userDetail?.email
+        email: userDetail?.email,
+        approved: true
       });
     }
 
