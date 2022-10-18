@@ -24,6 +24,16 @@ const getUserDetail = async (email) => {
     }
 }
 
+const addRequiredHeaders = () => {
+    return {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+        'Content-Type': 'application/json'
+    };
+}
+
 module.exports = {
-    getUserDetail
+    getUserDetail,
+    addRequiredHeaders
+
 }

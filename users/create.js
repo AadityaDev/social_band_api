@@ -4,6 +4,9 @@ const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const uuid = require('uuid');
 
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+
 module.exports = (event, callback) => {
     const data = JSON.parse(event?.body);
   
@@ -23,7 +26,7 @@ module.exports = (event, callback) => {
   
     const params = {
       TableName: 'users',
-      Item: { id: data?.id, email: data?.email, createdAt: data?.createdAt, updatedAt: data?.updatedAt }
+      Item: { id: data?.id, email: data?.email, password: bcrypt.hashSync(data?.password), createdAt: data?.createdAt, updatedAt: data?.updatedAt }
     };
   
     return dynamoDb.put(params, (error, data) => {

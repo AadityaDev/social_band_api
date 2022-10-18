@@ -19,7 +19,7 @@ module.exports = (event, callback) => {
   data.updatedAt = new Date().getTime();
 
   const params = {
-    TableName : 'band_groups',
+    TableName : 'bandgroup',
     Item: { data: data?.name, latitude: data?.latitude, longitude: data?.longitude, data: data?.description, updatedAt: data.updatedAt }
   };
 

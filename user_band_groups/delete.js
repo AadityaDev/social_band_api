@@ -5,7 +5,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports = (event, callback) => {
   const params = {
-    TableName : 'band_groups',
+    TableName : 'bandgroup',
     Key: {
       id: event?.pathParameters?.id
     }

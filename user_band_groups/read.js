@@ -6,9 +6,9 @@ const {getUserDetail} = require('../utils/utils');
 
 module.exports = async (event, callback) => {
   const params = {
-    TableName: 'band_groups',
+    TableName: 'bandgroup',
   };
-
+  console.log(`inside band group`);
   const email = event?.headers?.['x-auth'];
   console.log(`token and ${JSON.stringify(email)}`);
   let da = await getUserDetail(email);
