@@ -24,9 +24,11 @@ module.exports = (event, callback) => {
     data.createdAt = new Date().getTime();
     data.updatedAt = new Date().getTime();
   
+    console.log(`data is: ${data?.id}, ${data?.email}, ${bcrypt.hashSync(data?.password)}, ${data?.createdAt}, ${data?.updatedA}`);
+
     const params = {
       TableName: 'users',
-      Item: { id: data?.id, email: data?.email, password: bcrypt.hashSync(data?.password), createdAt: data?.createdAt, updatedAt: data?.updatedAt }
+      Item: { id: data?.id, name: data?.name, email: data?.email, password: bcrypt.hashSync(data?.password), createdAt: data?.createdAt, updatedAt: data?.updatedAt }
     };
   
     return dynamoDb.put(params, (error, data) => {
