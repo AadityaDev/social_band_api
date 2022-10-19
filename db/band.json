@@ -1,11 +1,31 @@
+// {
+//     "name": "Band1",
+//     "image": "",
+//     "latitude": 27.2046,
+//     "longitude": 77.4977,
+//     "description": "Initial state",
+//     "participants": [
+//         {
+//             "id": "9a74bb70-4ed7-11ed-b77e-d10a105b20e1",
+//             "email": "adi1@gmail.cm",
+//             "name": "aditya",
+//             "approved": true
+//         }
+//     ]
+// }
 {
-    "name": "",
+    "name": "Band1",
     "image": "",
     "latitude": 27.2046,
     "longitude": 77.4977,
-    "description": "",
-    "users": [{
-        "userId": "3",
-        "isGroupAdmin": "true"
-    }]
+    "description": "Initial state",
+    "adminEmail": "",
+    "participants": [
+        {
+            "id": "9a74bb70-4ed7-11ed-b77e-d10a105b20e1",
+            "email": "adi1@gmail.cm",
+            "name": "aditya",
+            "approved": true
+        }
+    ]
 }

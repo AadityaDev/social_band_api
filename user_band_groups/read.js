@@ -24,9 +24,9 @@ module.exports = async (event, callback) => {
 
   const params = {
     TableName: 'bandgroup',
-    KeyConditionExpression: '#email = :email',
+    KeyConditionExpression: '#adminEmail = :email',
     ExpressionAttributeNames: {
-      "#email": "email"
+      "#adminEmail": "adminEmail"
     },
     ExpressionAttributeValues: {
       ':email' : `${email}`

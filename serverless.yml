@@ -174,15 +174,11 @@ resources:
         TableName: 'users'
         BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
-          # - AttributeName: id
-          #   AttributeType: S
           - AttributeName: email
             AttributeType: S
           - AttributeName: name
             AttributeType: S
         KeySchema:
-          # - AttributeName: id
-          #   KeyType: HASH
           - AttributeName: email
             KeyType: HASH
           - AttributeName: name
@@ -195,25 +191,63 @@ resources:
             - AttributeName: name
               KeyType: RANGE
           Projection:
-            ProjectionType: ALL
-        # ProvisionedThroughput:
-        #   ReadCapacityUnits: 1
-        #   WriteCapacityUnits: 1        
+            ProjectionType: ALL        
     BandGroupsDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
-        AttributeDefinitions:
-          -
-            AttributeName: id
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
         TableName: 'bandgroup'
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: adminEmail
+            AttributeType: S
+          - AttributeName: bandName
+            AttributeType: S
+          # - AttributeName: latitude
+          #   AttributeType: N
+          # - AttributeName: longitude
+          #   AttributeType: N
+          # - AttributeName: description
+          #   AttributeType: S
+          # - AttributeName: participants
+          #   AttributeType: L
+        KeySchema:
+          - AttributeName: adminEmail
+            KeyType: HASH
+          - AttributeName: bandName
+            KeyType: RANGE
+          # - AttributeName: latitude
+          #   KeyType: RANGE
+          # - AttributeName: longitude
+          #   KeyType: RANGE
+          # - AttributeName: description
+          #   KeyType: RANGE
+          # - AttributeName: participants
+          #   KeyType: RANGE
+        GlobalSecondaryIndexes:
+        - IndexName: adminEmailIndex
+          KeySchema:
+            - AttributeName: adminEmail
+              KeyType: HASH
+            - AttributeName: bandName
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        # - IndexName: adminLatitudeIndex
+        #   KeySchema:
+        #     - AttributeName: adminEmail
+        #       KeyType: HASH
+        #     - AttributeName: latitude
+        #       KeyType: RANGE
+        #   Projection:
+        #     ProjectionType: ALL
+        # - IndexName: adminLongitudeIndex
+        #   KeySchema:
+        #     - AttributeName: adminEmail
+        #       KeyType: HASH
+        #     - AttributeName: longitude
+        #       KeyType: RANGE
+        #   Projection:
+        # ProjectionType: ALL 
     UserPool:
       Type: AWS::Cognito::UserPool
       Properties:
