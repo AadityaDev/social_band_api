@@ -27,9 +27,13 @@ const getUserDetail = async (email) => {
 const addRequiredHeaders = () => {
     return {
         'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,HEAD,OPTIONS,POST,PUT,DELETE,PATCH',
         'Access-Control-Allow-Credentials': true,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth'
     };
+            // 'Access-Control-Allow-Headers': '*'
+
 }
 
 module.exports = {

@@ -1,12 +1,15 @@
 'use strict';
 
 const AWS = require('aws-sdk');
+const config = require("../config/auth.config");
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const  { getUserByEmail } = require('../users/get-userby-email');
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 module.exports = async (event, callback) => {
   let userDetail;
+  let token;
   try{  
     const params = {
       TableName: 'users',
@@ -39,6 +42,35 @@ module.exports = async (event, callback) => {
       }
       callback(error);
     }
+
+    //check if token is valid or not
+    if(userDetail?.jwtToken) {
+      // verify token is valid or not
+      let tokenData = jwt.verify(token, config.secret);
+      console.log(`token data is: ${tokenData}`);
+    } else {
+      // expiresIn: 86400 // 24 hours
+      // expiresIn: 3600 // 1 hour
+      // expiresIn: 60 // 1 min
+      token = jwt.sign({ id: user.id }, config.secret, {
+        expiresIn: 60
+      });
+      console.log(`generated token is: ${token}`);
+
+      // update token in dynamo
+      userDetail.updatedAt = new Date().getTime();
+
+      const params = {
+        TableName : 'users',
+        Item: { jwtToken: token, updatedAt: userDetail?.updatedAt }
+      };
+    
+      let dada = await dynamoDb.put(params);
+
+      console.log(`dad: ${dada}`);
+    }
+
+
   } catch(ex) {
     console.log(`exceptio in verify is: ${ex}`);
     callback(error);

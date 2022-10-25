@@ -15,7 +15,7 @@ module.exports = (event, callback) => {
         errorType : "Validation",
         errorMessage: "User email is missing!!!",
         trace : [ "User details are missing!!!" ]
-      }
+      };
       callback(error);
     }
 
