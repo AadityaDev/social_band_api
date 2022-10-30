@@ -3,7 +3,7 @@
 const AWS = require('aws-sdk');
 const config = require("../config/auth.config");
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
-const  { getUserByEmail } = require('../users/get-userby-email');
+const  { getUserByEmail } = require('./get-userby-email');
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -114,14 +114,16 @@ module.exports = async (event, callback) => {
       console.log(`result: ${params}`);
       // Item: { email: userDetail?.email, name: userDetail?.name, jwtToken: token, updatedAt: updatedTime }
       let dada = await dynamoDb.put(params).promise();
-      if(dada && dada?.Attributes && dada?.Attributes?.id && dada?.Attributes?.jwtToken && userDetail?.jwtToken) {
-        console.log(`old: ${userDetail?.jwtToken} and new token: ${token}`);
-        console.log(`old: ${typeof userDetail?.jwtToken} and new token: ${typeof token}`);
-        // userDetail?.jwtToken = `${token}`;
-        userDetail = await getUserByEmail(data?.email);
+      if(dada && dada?.Attributes && dada?.Attributes?.id && dada?.Attributes?.jwtToken) {
+        userDetail?.jwtToken = token;
       }
       console.log(`dad: ${dada}`);
 
+      // console.log(`dad: ${JSON.stringify(dada)}`);
+      // for (var key in dada){
+      //   console.log( key + ": " + dada[key]);
+      // }
+    // }
   } catch(ex) {
     console.log(`exceptio in verify is: ${ex?.message}`);
     callback(ex);

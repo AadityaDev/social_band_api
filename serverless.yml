@@ -96,6 +96,13 @@ functions:
           method: POST
           path: signin
           cors: true
+  generateToken:
+    handler: handler.verifyUser
+    events:
+      - http:
+          method: POST
+          path: generate-token
+          cors: true
   createBandGroup:
     handler: handler.createBandGroup
     events:

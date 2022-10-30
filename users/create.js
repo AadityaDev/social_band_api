@@ -28,7 +28,7 @@ module.exports = (event, callback) => {
 
     const params = {
       TableName: 'users',
-      Item: { id: data?.id, name: data?.name, email: data?.email, password: bcrypt.hashSync(data?.password), createdAt: data?.createdAt, updatedAt: data?.updatedAt }
+      Item: { id: data?.id, name: data?.name, email: data?.email, password: bcrypt.hashSync(data?.password), jwtToken: null, createdAt: data?.createdAt, updatedAt: data?.updatedAt }
     };
   
     return dynamoDb.put(params, (error, data) => {
