@@ -97,7 +97,7 @@ functions:
           path: signin
           cors: true
   generateToken:
-    handler: handler.verifyUser
+    handler: handler.tokenGenerate
     events:
       - http:
           method: POST
