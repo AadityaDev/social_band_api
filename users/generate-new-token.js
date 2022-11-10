@@ -47,7 +47,7 @@ module.exports = async (event, callback) => {
     // expiresIn: 86400 // 24 hours
     // expiresIn: 3600 // 1 hour
     // expiresIn: 60 // 1 min
-    token = jwt.sign({ id: userDetail.id }, config.secret, {
+    token = jwt.sign({ id: userDetail.id, email: userDetail?.email }, config.secret, {
       expiresIn: 3600
     });
     console.log(`generated token is: ${token} and ${userDetail?.email}`);
